@@ -1,8 +1,6 @@
 package com.example.carwale.Comman;
 
-import com.example.carwale.model.ListFields;
 
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

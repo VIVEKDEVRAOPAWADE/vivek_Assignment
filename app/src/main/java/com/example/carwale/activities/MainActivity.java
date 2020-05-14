@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.Event
             SearchView searchview;
             private ListAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+           @Override
+           protected void onCreate(Bundle savedInstanceState) {
                     super.onCreate(savedInstanceState);
                     setContentView(R.layout.activity_main);
                     recyclerView=findViewById(R.id.recyclerView1);
@@ -51,25 +51,17 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.Event
                     searchview =findViewById(R.id.searchview1);
                     searchview.setOnQueryTextListener(this);
                     searchview.setOnCloseListener(this);
+                   // searchview.onActionViewExpanded();
+             }
 
 
-
-
-    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        loadData();
-//
-//    }
 
                 @Override
                 protected void onResume() {
                     super.onResume();
                     loadData();
                 }
-    private void loadData() {
+                private void loadData() {
                         Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(Api.BASE_URL)
                         .addConverterFactory(ScalarsConverterFactory.create())
@@ -114,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.Event
                         e.printStackTrace();
                     }
                 }
+
                 hotelsAll.clear();
                 hotelsAll.addAll(listfields);
 
@@ -127,33 +120,41 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.Event
 
                 }
 
-    @Override
-    public void onSelect(ListFields listfields) {
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra("CountryName", listfields.getCountryname());
-//        startActivity(intent);
-    }
+                        @Override
+                        public void onSelect(ListFields listfields) {
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(this,"onQueryTextSubmit "+query ,Toast.LENGTH_LONG).show();
-        loadData();
-        return false;
-    }
+                            Toast.makeText(this,"onQueryTextSubmit "+listfields.getCountryname() ,Toast.LENGTH_LONG).show();
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-          adapter.getFilter().filter(newText);
-        Toast.makeText(this,"Query is "+ text,Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(this, DetailActivity.class);
+                            intent.putExtra("CountrymameDetail", listfields.getCountryname());
+                            intent.putExtra("Totalconfirmed",listfields.getTotalcases());
+                            intent.putExtra("Totalrecoverd",listfields.getTotalrecovered());
+                            intent.putExtra("Totaldeaths" ,listfields.getTotaldeaths());
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                           // Toast.makeText(this,"onQueryTextSubmit "+query ,Toast.LENGTH_LONG).show();
+
+                            loadData();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            String text = newText;
+                              adapter.getFilter().filter(newText);
+                          //  Toast.makeText(this,"Query is "+ text,Toast.LENGTH_SHORT).show();
 
 
-        return false;
-    }
+                            return false;
+                        }
 
-    @Override
-    public boolean onClose() {
-       loadData();
-        return false;
-    }
+                        @Override
+                        public boolean onClose() {
+                                   loadData();
+                           adapter.notifyDataSetChanged();
+                            return false;
+                        }
 }

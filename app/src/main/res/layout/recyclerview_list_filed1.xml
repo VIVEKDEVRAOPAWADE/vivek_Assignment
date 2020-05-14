@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
     <TextView
             android:id="@+id/countrynamefield"
-
+            android:textStyle="bold"
             android:layout_marginLeft="10dp"
             android:text="Country Name "
             android:textSize="20dp"
